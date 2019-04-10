@@ -7,6 +7,8 @@ var http        = require('http');
 var https       = require('https');
 var fs          = require('fs');
 
+var userRouter  = require('./routes/usersRoutes');
+
 var port        = process.env.PORT || 8000;
 process.env.TZ  = 'UTC';
 
@@ -23,4 +25,10 @@ http.createServer(app).listen(port);
 // };
 // https.createServer(options, app).listen(port);
 
+app.get('/', function(req, res){
+    res.send('Welcome to back-end Nugroho Kurio test');
+});
+
 console.log('Server running on port on port : ' + port);
+
+app.use('/users', userRouter);
