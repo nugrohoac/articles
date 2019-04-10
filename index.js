@@ -7,8 +7,9 @@ var http        = require('http');
 var https       = require('https');
 var fs          = require('fs');
 
-var userRouter  = require('./routes/usersRoutes');
-
+var authRouter      = require('./routes/authRoutes');
+var articlesRouter  = require('./routes/articlesRoutes');
+var jwtMiddleware   = require('./middleware/jwtMiddleware');
 var port        = process.env.PORT || 8000;
 process.env.TZ  = 'UTC';
 
@@ -31,4 +32,8 @@ app.get('/', function(req, res){
 
 console.log('Server running on port on port : ' + port);
 
-app.use('/users', userRouter);
+app.use('/auth', authRouter);
+
+app.use(jwtMiddleware.jwtMiddleware);
+
+app.use('/articles', articlesRouter);

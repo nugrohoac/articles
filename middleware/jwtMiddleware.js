@@ -1,5 +1,5 @@
 var jwt             = require('jsonwebtoken');
-var secretKey       = require('../utils/config/secretKey');
+var secretKey       = require('../utils/constan/secretKeyConstant');
 
 var jwtMiddleware = function(req, res, next){
     if(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer'){
@@ -13,6 +13,8 @@ var jwtMiddleware = function(req, res, next){
                     message: 'Token invalid'
                 })
             }
+            req.userId = decode.userId;
+            req.userName = decode.userName;
         })
         next();
     }else{
