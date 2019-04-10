@@ -30,28 +30,36 @@ var List = function(req, res){
 
 var Edit = function(req, res){
     articlesService.GetById(req, res).then((articleData) => {
-        if(req.userId == articleData.created_by){
-            articlesService.Edit(req, res).then((editArticleData) => {
-                if(editArticleData){
-                    articlesService.GetById(req, res).then((articleData) => {
+        if(articleData){
+            if(req.userId == articleData.created_by){
+                articlesService.Edit(req, res).then((editArticleData) => {
+                    if(editArticleData){
+                        articlesService.GetById(req, res).then((articleData) => {
+                            res.json({
+                                'error' : false,
+                                'message' : 'Successfully edit articles',
+                                'data' : articleData
+                            });
+                        });
+                    }else{
                         res.json({
                             'error' : false,
-                            'message' : 'Successfully edit articles',
-                            'data' : articleData
+                            'message' : 'Nothing to update',
+                            'data' : ''
                         });
-                    });
-                }else{
-                    res.json({
-                        'error' : false,
-                        'message' : 'Nothing to update',
-                        'data' : ''
-                    });
-                }
-            })
+                    }
+                })
+            }else{
+                res.json({
+                    'error' : true,
+                    'message' : 'You are not article owner',
+                    'data' : ''
+                });
+            }
         }else{
             res.json({
                 'error' : true,
-                'message' : 'You are not article owner',
+                'message' : 'Articles not found',
                 'data' : ''
             });
         }
